@@ -1,6 +1,7 @@
 package com.example.bigdata;
 
 import com.example.bigdata.model.SensorData;
+import com.example.bigdata.tools.Properties;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.java.utils.ParameterTool;
 
@@ -10,9 +11,7 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 public class SensorDataAnalysis {
     public static void main(String[] args) throws Exception {
 
-        ParameterTool propertiesFromFile = ParameterTool.fromPropertiesFile("flink.properties");
-        ParameterTool propertiesFromArgs = ParameterTool.fromArgs(args);
-        ParameterTool properties = propertiesFromFile.mergeWith(propertiesFromArgs);
+        ParameterTool properties = Properties.get(args);
 
         StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
 
