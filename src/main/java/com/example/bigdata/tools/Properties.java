@@ -7,12 +7,17 @@ public class Properties {
 
         ParameterTool propertiesFromArgs = ParameterTool.fromArgs(args);
 
-        try {
-            // Próba załadowania pliku z parametrami
-            ParameterTool propertiesFromFile = ParameterTool.fromPropertiesFile("flink.properties");
-            return propertiesFromFile.mergeWith(propertiesFromArgs);
-        } catch (Exception e) {
-            // Jeśli plik nie istnieje, użyj tylko argumentów
+        if (propertiesFromArgs.has("params")) {
+            String paramsFilePath = propertiesFromArgs.get("params");
+            try {
+                // Ładowanie parametrów z pliku
+                ParameterTool propertiesFromFile = ParameterTool.fromPropertiesFile(paramsFilePath);
+                // Łączenie parametrów z pliku z parametrami z linii poleceń
+                return propertiesFromFile.mergeWith(propertiesFromArgs);
+            } catch (Exception e) {
+                throw new RuntimeException("Nie udało się załadować pliku z parametrami: " + paramsFilePath, e);
+            }
+        } else {
             return propertiesFromArgs;
         }
     }

@@ -29,7 +29,8 @@ public class SensorDataAnalysis {
                 "33,speed,1591531561000",
                 "26,temperature,1591531561000");
 
-        DataStream<SensorData> sensorDataDS = inputStream.map((MapFunction<String, String[]>) txt -> txt.split(",") )
+        DataStream<SensorData> sensorDataDS = inputStream
+                .map((MapFunction<String, String[]>) txt -> txt.split(",") )
                 .filter(array -> array.length == 3)
                 .filter(array -> array[0].matches("\\d+") && array[2].matches("\\d+"))
                 .map(array -> new SensorData(Integer.parseInt(array[0]), array[1], Long.parseLong(array[2])));
